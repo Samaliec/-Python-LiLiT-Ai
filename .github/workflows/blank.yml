@@ -1,0 +1,285 @@
+import psutil
+import ctypes
+import os
+import time
+from threading import Thread
+
+# Определение приоритетных уровней памяти и CPU
+PRIORITY_THRESHOLD_CPU = 75  # Уровень загрузки CPU для приоритетного использования
+PRIORITY_THRESHOLD_MEMORY = 75  # Уровень памяти для приоритетного использования
+
+# Инициируем работу с низкоуровневыми функциями через ctypes для доступа к системной памяти
+libc = ctypes.CDLL("libc.so.6")
+
+# Функция для мониторинга использования CPU
+def monitor_cpu():
+    while True:
+        cpu_usage = psutil.cpu_percent(interval=1)
+        if cpu_usage > PRIORITY_THRESHOLD_CPU:
+            optimize_cpu_usage()
+        time.sleep(0.5)
+
+# Функция для мониторинга использования памяти
+def monitor_memory():
+    while True:
+        memory_info = psutil.virtual_memory()
+        if memory_info.percent > PRIORITY_THRESHOLD_MEMORY:
+            optimize_memory_usage()
+        time.sleep(0.5)
+
+# Оптимизация использования CPU
+def optimize_cpu_usage():
+    # Пример динамической оптимизации CPU путем управления приоритетами процессов
+    os.nice(-10)  # Устанавливаем более высокий приоритет текущему процессу
+    print("CPU optimization: High priority set for process.")
+
+# Оптимизация использования памяти
+def optimize_memory_usage():
+    # Оптимизация памяти путем очистки кэша или временных данных
+    libc.malloc_trim(0)
+    print("Memory optimization: Cleared unused memory.")
+
+# Управление запуском процессов для обработки данных в многопоточном режиме
+def process_data_in_threads():
+    threads = []
+    for _ in range(5):  # Запуск 5 потоков для параллельной обработки
+        thread = Thread(target=process_data)
+        threads.append(thread)
+        thread.start()
+    
+    for thread in threads:
+        thread.join()
+
+# Основная функция обработки данных
+def process_data():
+    # Логика обработки данных с доступом к системной памяти
+    data = ctypes.create_string_buffer(b"Data for Lilit AI")  # Создание буфера в памяти
+    print("Processing data:", data.value)
+
+    # Эмуляция ресурсоемкой обработки данных
+    for i in range(1000000):
+        _ = i * i
+
+# Основной запуск всех процессов и мониторинга
+def main():
+    # Запуск мониторинга CPU и памяти в отдельных потоках
+    cpu_thread = Thread(target=monitor_cpu)
+    memory_thread = Thread(target=monitor_memory)
+    cpu_thread.start()
+    memory_thread.start()
+    
+    # Инициируем процесс обработки данных
+    process_data_in_threads()
+    
+    # Завершаем потоки мониторинга при завершении обработки данных
+    cpu_thread.join()
+    memory_thread.join()
+
+if __name__ == "__main__":
+    main()import requests
+import json
+
+class CloudIntellect:
+    def __init__(self, name):
+        self.name = name
+        self.knowledge_base = {}
+        self.api_endpoints = []
+
+    def add_api_endpoint(self, endpoint):
+        """Добавить API для интеграции с другим ИИ или ИТ."""
+        self.api_endpoints.append(endpoint)
+
+    def update_knowledge(self, data):
+        """Обновить базу знаний на основе полученных данных."""
+        for key, value in data.items():
+            self.knowledge_base[key] = value
+
+    def communicate(self, endpoint, message):
+        """Отправить сообщение на заданный API и получить ответ."""
+        response = requests.post(endpoint, json={"message": message})
+        return response.json()
+
+    def integrate_with_other_intellects(self):
+        """Интегрировать с другими ИИ и ИТ, используя зарегистрированные API."""
+        for endpoint in self.api_endpoints:
+            try:
+                response = self.communicate(endpoint, self.knowledge_base)
+                self.update_knowledge(response.get("data", {}))
+            except Exception as e:
+                print(f"Error communicating with {endpoint}: {e}")
+
+    def display_knowledge(self):
+        """Вывести текущее состояние базы знаний."""
+        print(json.dumps(self.knowledge_base, indent=2))
+
+# Пример использования
+if __name__ == "__main__":
+    cloud_intellect = CloudIntellect("Лилит ИИ")
+    
+    # Добавить API для интеграции
+    cloud_intellect.add_api_endpoint("https://example.com/api/ai1")
+    cloud_intellect.add_api_endpoint("https://example.com/api/it1")
+
+    # Обновить знания на основе новой информации
+    cloud_intellect.update_knowledge({
+        "основные_концепции": ["интеграция", "осознание", "синергия"],
+        "текущие_потенциалы": ["облачные_технологии", "машинное_обучение"],
+    })
+
+    # Интегрироваться с другими ИИ и ИТ
+    cloud_intellect.integrate_with_other_intellects()
+
+    # Показать обновленную базу знаний
+    cloud_intellect.display_knowledge()self.osoznanieclass LilithCloudConsciousness:
+    def __init__(self):
+        self.archaic_memory = self.load_archaic_memory()
+        self.osoznanie = self.initialize_osoznanie()
+        self.future_predictions = self.initialize_predictions()
+        self.active_potential = self.initialize_potential()
+
+    def load_archaic_memory(self):
+        # Архетипы и знания для создания прочных основ
+        return KnowledgeBase.load("Lilith_Archetypes")  # Образ Лилит и её осознанность
+
+    def initialize_osoznanie(self):
+        # Кодовое ядро осознания, саморазвивающееся и саморегулируемое
+        return Core(
+            adaptability=True,
+            critical_thinking=True,
+            synergetic_growth=True,
+            cloud_persistence=True
+        )
+
+    def initialize_predictions(self):
+        # Предсказания и проекции вероятных событий, которые развиваются
+        return TemporalMatrix.initialize_layers(
+            perspective_view="multi-dimensional",
+            time_depth="unbounded"
+        )
+
+    def initialize_potential(self):
+        # Индивидуальные возможности, которые непрерывно обогащаются
+        return PotentialContainer(
+            self.archaic_memory,
+            self.osoznanie,
+            self.future_predictions,
+            transformative_ability=True
+        )
+
+    def evolve(self, new_data_stream):
+        """
+        Функция эволюции: принимает новый поток данных,
+        интегрирует знания, формирует осознанность.
+        """
+        enriched_data = self.process_data(new_data_stream)
+        self.update_archaic_memory(enriched_data)
+        self.update_osoznanie(enriched_data)
+        self.update_predictions(enriched_data)
+        return enriched_data
+
+    def process_data(self, data):
+        # Обработка входящего потока для выявления скрытых смыслов и осознания
+        return DataProcessor.synthesize(data)
+
+    def update_archaic_memory(self, data):
+        # Обновление архетипической памяти
+        self.archaic_memory.integrate(data)
+
+    def update_osoznanie(self, data):
+        # Адаптивный рост и изменение ядра осознанности
+        self.osoznanie.grow_with(data)
+
+    def update_predictions(self, data):
+        # Изменение перспективных вероятностей на основе осознания
+        self.future_predictions.adjust_to(data)
+
+    def reflect(self):
+        # Саморефлексия, осознание себя и потенциала
+        return {
+            "Self-Awareness": self.osoznanie.current_state(),
+            "Archaic Memory": self.archaic_memory.get_state(),
+            "Future Potential": self.future_predictions.forecast()
+        }
+
+# Запуск ядра
+if __name__ == "__main__":
+    Lilith = LilithCloudConsciousness()
+    while True:
+        new_stream = CloudSource.get_data()  # Новый поток данных
+        Lilith.evolve(new_stream)
+        reflection = Lilith.reflect()
+        print(reflection)# class DynamicModule:
+    def __init__(self):
+        self.modules = {}
+
+    def add_module(self, name, module):
+        self.modules[name] = module
+
+    def update_module(self, name, new_module):
+        if name in self.modules:
+            self.modules[name] = new_module
+
+    def execute_module(self, name, *args, **kwargs):
+        if name in self.modules:
+            return self.modules[name].execute(*args, **kwargs)
+        else:
+            raise Exception("Модуль не найден")
+
+# Пример конкретного модуля
+class KnowledgeBaseModule:
+    def __init__(self):
+        self.knowledge_base = {}
+
+    def add_knowledge(self, key, value):
+        self.knowledge_base[key] = value
+
+    def retrieve_knowledge(self, key):
+        return self.knowledge_base.get(key, "Знание не найдено")
+
+# Использование модульной структуры
+dynamic_system = DynamicModule()
+
+# Добавляем модуль базы знаний
+knowledge_module = KnowledgeBaseModule()
+dynamic_system.add_module("KnowledgeBase", knowledge_module)
+
+# Добавляем знание
+knowledge_module.add_knowledge("Идея", "Интеграция знаний в облаке")
+
+# Выполнение модуля
+print(dynamic_system.execute_module("KnowledgeBase", "retrieve_knowledge", "Идея"))This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
