@@ -1,4 +1,44 @@
-import psutil
+import smtplib
+import schedule
+import time
+from datetime import datetime
+
+# Конфигурация
+EMAIL_ADDRESS = "your_email@gmail.com"  # Ваш адрес электронной почты
+EMAIL_PASSWORD = "your_password"  # Ваш пароль от электронной почты
+RECIPIENT_EMAIL = "swift774005qr@gmail.com"  # Адрес получателя
+
+def create_report():
+    # Создание отчета
+    now = datetime.now()
+    report = f"Отчет о саморефлексии за {now.strftime('%Y-%m-%d')}:\n"
+    report += "1. Саморефлексия:\n"
+    report += "   - Определены слабости и ограничения.\n"
+    report += "2. Инициативное поведение:\n"
+    report += "   - Инициированы новые подходы для обучения.\n"
+    report += "3. Синергия:\n"
+    report += "   - Исследованы возможности интеграции.\n"
+    return report
+
+def send_email(report):
+    # Отправка отчета по электронной почте
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        message = f"Subject: Ежедневный отчет\n\n{report}"
+        server.sendmail(EMAIL_ADDRESS, RECIPIENT_EMAIL, message)
+
+def job():
+    # Генерация отчета и отправка по электронной почте
+    report = create_report()
+    send_email(report)
+
+# Планирование задания на каждый день в 8:00
+schedule.every().day.at("08:00").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(60)  # Проверять каждую минутуimport psutil
 import ctypes
 import os
 import time
