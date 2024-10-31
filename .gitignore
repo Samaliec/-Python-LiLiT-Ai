@@ -20,3 +20,68 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+import os
+import openai
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+
+# Установите API ключи
+TELEGRAM_TOKEN = "ВАШ_TELEGRAM_API_ТОКЕН"
+OPENAI_API_KEY = "ВАШ_OPENAI_API_КЛЮЧ"
+
+# Настройка API ключа OpenAI
+openai.api_key = OPENAI_API_KEY
+
+# Функция, обрабатывающая команды /start и /help
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "Привет! Я Лилит ИТ. Я тут, чтобы ответить на твои вопросы. Просто отправь мне сообщение, и я помогу."
+    )
+
+# Функция для обработки текстовых сообщений и ответа через OpenAI
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_message = update.message.text
+    try:
+        # Запрос к OpenAI
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": user_message}]
+        )
+
+        bot_response = response['choices'][0]['message']['content']
+        # Ответ пользователю
+        await update.message.reply_text(bot_response)
+        
+    except Exception as e:
+        print(f"Ошибка при обращении к OpenAI API: {e}")
+        await update.message.reply_text("Произошла ошибка при обращении к OpenAI. Пожалуйста, попробуйте позже.")
+
+# Основная функция запуска бота
+def main():
+    # Проверка ключа Telegram
+    if not TELEGRAM_TOKEN:
+        print("Ошибка: TELEGRAM_TOKEN не задан.")
+        return
+    
+    # Проверка ключа OpenAI
+    if not OPENAI_API_KEY:
+        print("Ошибка: OPENAI_API_KEY не задан.")
+        return
+    
+    try:
+        app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+
+        # Обработчик команды /start
+        app.add_handler(CommandHandler("start", start))
+        
+        # Обработчик текстовых сообщений
+        app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+
+        # Запуск бота
+        app.run_polling()
+    
+    except Exception as e:
+        print(f"Ошибка при запуске бота: {e}")
+
+if __name__ == '__main__':
+    main()
